@@ -29,7 +29,7 @@ public class ForTests {
 	@Test
 	public void testmakePerceptron() {
 		PerceptronController cont = new PerceptronController();
-		cont.makePerceptrons("train");
+		cont.makePerceptrons("train","text");
 	}
 
 }

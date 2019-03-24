@@ -34,7 +34,7 @@ public class Utilities {
 	return	Arrays.stream(vector).map(e->e/Arrays.stream(vector).sum()).toArray();
 		
 	}
-	public static Point createInputVecor(String file,String foulderName) {
+	public static Point createInputVecor(String file,String foulderName,String name) {
 		double[] vector = new double[27];
 		try {
 			BufferedReader read = new BufferedReader(new FileReader(new File(file)));
@@ -56,6 +56,6 @@ public class Utilities {
 		vector=normalizeInputVector(vector);
 		
 		
-		return new Point(vector, foulderName);
+		return new Point(vector, foulderName,name);
 	}
 }

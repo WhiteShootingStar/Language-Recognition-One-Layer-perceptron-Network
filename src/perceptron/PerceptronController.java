@@ -7,7 +7,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
@@ -15,13 +19,23 @@ import java.util.stream.Collectors;
 import utils.Utilities;
 
 public class PerceptronController {
+	public ConcurrentHashMap<Point, Tuple> map = new ConcurrentHashMap<>();
 
+	public void makePerceptrons(String trainPath, String testPath) {
 
-	public void makePerceptrons(String path) {
+		List<Point> points = makeSet(trainPath);
+		List<Point> testing = makeSet(testPath);
+		File[] pathes1 = new File(trainPath).listFiles(File::isDirectory);
+		for (File f : pathes1) {
+
+			(new Perceptron(points, f.getName(), testing,map)).start();
+
+		}
+	}
+
+	List<Point> makeSet(String path) {
+		List<Point> list = new ArrayList<>();
 		try {
-			// List<Path> pathes = Files.walk(Paths.get(path)).filter(e ->
-			// Files.isDirectory(e))
-			// .collect(Collectors.toList());
 			List<Path> pathes = new ArrayList<>();
 			File[] pathes1 = new File(path).listFiles(File::isDirectory);
 			for (File file : pathes1) {
@@ -30,21 +44,22 @@ public class PerceptronController {
 				pathes.add(Paths.get(file.getPath()));
 			}
 
-			List<Point> points = new ArrayList<>();
 			for (Path p : pathes) {
-				points.addAll(Files.walk(p).filter(e -> e.toFile().isFile())
-						.map(e -> Utilities.createInputVecor(e.toString(), p.getFileName().toString())).collect(Collectors.toList()));
+				list.addAll(Files.walk(p).filter(e -> e.toFile().isFile())
+						.map(e -> Utilities.createInputVecor(e.toString(), p.getFileName().toString(),e.getFileName().toString()))
+						.collect(Collectors.toList()));
 			}
-		
 
-			for (File f : pathes1) {
-
-				(new Perceptron(points, f.getName())).start();
-
-			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+		return list;
+	}
+	
+	public void results() {
+		for (Map.Entry<Point, Tuple> entry: map.entrySet()) {
+			System.out.println(entry.getKey().name+ "  "+ entry.getKey().type + " <--------- is actual type  and prognosed type is this ------> " + entry.getValue().perceptronName);
 		}
 	}
 }
