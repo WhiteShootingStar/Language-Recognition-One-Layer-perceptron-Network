@@ -10,27 +10,31 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ConcurrentSkipListMap;
 
+import utils.Utilities;
+
 public class Perceptron extends Thread {
 
 	public List<Point> foulders;
 	public final String activationValue;
 	public double[] weights;
 	public double THRESHOLD = 0.1;
-	public static final double LEARNING_RATE = 0.5;
+	public static final double LEARNING_RATE = 0.8;
 	public final double ERROR_THRESHHOLD = 0.6;
 	volatile double[] inputVector;
 	int lines_count = 0;
 	double err = 0;
 	public volatile List<Point> testing;
 	public ConcurrentMap<Point, Tuple> map;
+	String toTest;
 
 	public Perceptron(List<Point> foulders, String activationValue, List<Point> testing,
-			ConcurrentHashMap<Point, Tuple> map) {
+			ConcurrentHashMap<Point, Tuple> map, String toTest) {
 
 		this.foulders = foulders;
 		this.activationValue = activationValue;
 		this.testing = testing;
 		this.map = map;
+		this.toTest = toTest;
 	}
 
 	@Override
@@ -48,16 +52,12 @@ public class Perceptron extends Thread {
 			EPOCH++;
 
 		} while (err / lines_count > ERROR_THRESHHOLD);
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		spat(1000);
 		System.out.println("\u001B[31m" + Arrays.toString(weights) + " are final after " + EPOCH
 				+ "Epoch. Final error is " + err / lines_count + " .Activation is " + activationValue);
 
 		test();
+
 	}
 
 	public synchronized void train() {
@@ -73,26 +73,50 @@ public class Perceptron extends Thread {
 
 	public void test() {
 		Iterator<Point> iter = testing.iterator();
+		int totalCounter = 0;
+		int succesfullCounct = 0;
 		while (iter.hasNext()) {
-			
+
 			Point point = iter.next();
-//			 System.out.println(calculateActualOutput(point) + " calculated by " +
-//			 activationValue
-//			 + " .Actual values is " + point.type);
+			// System.out.println(calculateActualOutput(point) + " calculated by " +
+			// activationValue
+			// + " .Actual values is " + point.type);
 			double output = calculateActualOutput(point);
 			if (map.containsKey(point)) {
-				System.out.println("By " +map.get(point).perceptronName +" " +map.get(point).value + " <---- is inside map ::::: ouput ---> " + output + " by " + activationValue);
+
 				if (map.get(point).value < output) {
 					map.get(point).value = output;
-					map.get(point).perceptronName=activationValue;
-					//System.out.println("value changed to " + output);
+					map.get(point).perceptronName = activationValue;
+					// System.out.println("value changed to " + output);
 				}
 
 			} else {
 				map.put(point, new Tuple(activationValue, output));
 			}
+			if (point.type.equals(activationValue)) {
+				succesfullCounct++;
+			}
+			totalCounter++;
 
 		}
+		spat(200);
+		System.out
+				.println("overall accuracy for " + activationValue + " is " + (double) succesfullCounct / totalCounter);
+
+		Point testingPoint = Utilities.createInputVecor(toTest);
+		double output = calculateActualOutput(testingPoint);
+		if (map.containsKey(testingPoint)) {
+
+			if (map.get(testingPoint).value < output) {
+				map.get(testingPoint).value = output;
+				map.get(testingPoint).perceptronName = activationValue;
+				// System.out.println("value changed to " + output);
+			}
+
+		} else {
+			map.put(testingPoint, new Tuple(activationValue, output));
+		}
+		
 	}
 
 	double calculateActualOutput(Point inputVector) { // calculate output by formula W^T *X >=0? 1:0 where W^T is
@@ -129,6 +153,15 @@ public class Perceptron extends Thread {
 			a = 1;
 		}
 		return Math.abs(a - calculateActualOutput(inputVector));
+	}
+
+	void spat(long milis) {
+		try {
+			Thread.sleep(milis);
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 	}
 
 }

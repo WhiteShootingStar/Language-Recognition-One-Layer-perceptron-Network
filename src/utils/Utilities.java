@@ -27,24 +27,26 @@ public class Utilities {
 		for (char i = 'a'; i <= 'z'; i++) {
 			vector[i - 'a'] += countLetter(sentence, i);
 		}
-		
+
 	}
+
 	static double[] normalizeInputVector(double[] vector) {
-		
-	return	Arrays.stream(vector).map(e->e/Arrays.stream(vector).sum()).toArray();
-		
+
+		return Arrays.stream(vector).map(e -> e / Arrays.stream(vector).sum()).toArray();
+
 	}
-	public static Point createInputVecor(String file,String foulderName,String name) {
+
+	public static Point createInputVecor(String file, String foulderName, String name) {
 		double[] vector = new double[27];
 		try {
 			BufferedReader read = new BufferedReader(new FileReader(new File(file)));
 			String line;
 			while ((line = read.readLine()) != null) {
-				fillVector(line,vector);
+				fillVector(line, vector);
 			}
-		//	normalizeInputVector(vector);
+			// normalizeInputVector(vector);
 			read.close();
-			
+
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -52,10 +54,17 @@ public class Utilities {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		vector[vector.length-1] =-1;
-		vector=normalizeInputVector(vector);
-		
-		
-		return new Point(vector, foulderName,name);
+		vector[vector.length - 1] = -1;
+		vector = normalizeInputVector(vector);
+
+		return new Point(vector, foulderName, name);
+	}
+
+	public static Point createInputVecor(String text) {
+		double[] vector = new double[27];
+		fillVector(text, vector);
+		vector[vector.length - 1] = -1;
+		vector = normalizeInputVector(vector);
+		return new Point(vector);
 	}
 }
