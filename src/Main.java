@@ -4,20 +4,16 @@ public class Main {
 
 	public static void main(String[] args) {
 		PerceptronController cont = new PerceptronController();
-	cont.makePerceptrons("train","test");
-		try {
-			Thread.sleep(4000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		cont.makePerceptrons("train", "test");
+
+		System.out.println(Thread.activeCount());
+		while (Thread.activeCount() <= cont.perceptronCount + 1) { // Bad implementation of thread-consistency
+			if (Thread.activeCount() == 1) {
+				cont.results();
+				break;
+			}
 		}
-		while(Thread.activeCount()<=2) {
-			cont.results();
-			break;
-		}
-		
-		
-	//	System.out.println("kappa");
+
 	}
 
 }

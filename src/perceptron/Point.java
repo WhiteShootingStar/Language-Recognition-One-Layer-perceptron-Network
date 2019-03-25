@@ -2,7 +2,7 @@ package perceptron;
 
 import java.util.Arrays;
 
-public class Point {
+public class Point { // simple class which stores values (normalized vector of letters, type of the text, and the name of the file which contains this text)
 	public double[] value_vector;
 	public String type;
 	public String name;
