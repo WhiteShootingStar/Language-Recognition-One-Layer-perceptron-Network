@@ -65,6 +65,7 @@ public class Utilities {
 		fillVector(text, vector);
 		vector[vector.length - 1] = -1;
 		vector = normalizeInputVector(vector);
+		//System.out.println(normalizeInputVector(vector));
 		return new Point(vector);
 	}
 }

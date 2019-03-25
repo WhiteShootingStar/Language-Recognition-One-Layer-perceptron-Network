@@ -36,10 +36,10 @@ public class PerceptronController {
 
 		Scanner scan = new Scanner(System.in);
 		System.out.println("Please enter String in any language and I will try to recognise it");
-		String line = scan.next();
+		String line = scan.nextLine();
 		for (File f : pathes1) {
 
-			(new Perceptron(points, f.getName(), testing, map,line)).start();
+			(new Perceptron(points, f.getName(), testing, map, line)).start();
 
 		}
 

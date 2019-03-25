@@ -19,7 +19,7 @@ public class Perceptron extends Thread {
 	public double[] weights;
 	public double THRESHOLD = 0.1;
 	public static final double LEARNING_RATE = 0.5;
-	public final double ERROR_THRESHHOLD = 0.055;
+	public final double ERROR_THRESHHOLD = 0.058;
 	volatile double[] inputVector;
 	int lines_count = 0;
 	double err = 0;
@@ -105,7 +105,8 @@ public class Perceptron extends Thread {
 
 		Point testingPoint = Utilities.createInputVecor(toTest);
 		double output = calculateActualOutput(testingPoint);
-		System.out.println(output + " output by " +activationValue + " perceptron ");
+		System.out.println(Arrays.toString(testingPoint.value_vector));
+		System.out.println(output + " output of your value  by " +activationValue + " perceptron ");
 		if (map.containsKey(testingPoint)) {
 
 			if (map.get(testingPoint).value < output) {
