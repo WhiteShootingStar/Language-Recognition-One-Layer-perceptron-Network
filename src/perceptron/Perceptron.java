@@ -18,8 +18,8 @@ public class Perceptron extends Thread {
 	public final String activationValue;
 	public double[] weights;
 	public double THRESHOLD = 0.1;
-	public static final double LEARNING_RATE = 0.8;
-	public final double ERROR_THRESHHOLD = 0.6;
+	public static final double LEARNING_RATE = 0.5;
+	public final double ERROR_THRESHHOLD = 0.055;
 	volatile double[] inputVector;
 	int lines_count = 0;
 	double err = 0;
@@ -99,12 +99,13 @@ public class Perceptron extends Thread {
 			totalCounter++;
 
 		}
-		spat(200);
-		System.out
-				.println("overall accuracy for " + activationValue + " is " + (double) succesfullCounct / totalCounter);
+		spat(1000);
+//		System.out
+//				.println("overall accuracy for " + activationValue + " is " + (double) succesfullCounct / totalCounter);
 
 		Point testingPoint = Utilities.createInputVecor(toTest);
 		double output = calculateActualOutput(testingPoint);
+		System.out.println(output + " output by " +activationValue + " perceptron ");
 		if (map.containsKey(testingPoint)) {
 
 			if (map.get(testingPoint).value < output) {

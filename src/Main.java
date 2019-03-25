@@ -6,12 +6,17 @@ public class Main {
 		PerceptronController cont = new PerceptronController();
 	cont.makePerceptrons("train","test");
 		try {
-			Thread.sleep(2000);
+			Thread.sleep(4000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		cont.results();
+		while(Thread.activeCount()<=2) {
+			cont.results();
+			break;
+		}
+		
+		
 	//	System.out.println("kappa");
 	}
 
