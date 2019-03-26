@@ -14,7 +14,7 @@ public class Perceptron extends Thread {
 	public double[] weights;
 	public double THRESHOLD = 0.1;
 	public static final double LEARNING_RATE = 0.5;
-	public final double ERROR_THRESHHOLD = 0.06;
+	public final double ERROR_THRESHHOLD = 0.07;
 	volatile double[] inputVector;
 	int lines_count = 0;
 	double err = 0;
@@ -46,7 +46,7 @@ public class Perceptron extends Thread {
 			EPOCH++;
 
 		} while (err / lines_count > ERROR_THRESHHOLD);
-		//spat(1000);
+		// spat(1000);
 		System.out.println("\u001B[31m" + Arrays.toString(weights) + " are final after " + EPOCH
 				+ "Epoch. Final error is " + err / lines_count + " .Activation is " + activationValue);
 
@@ -87,9 +87,10 @@ public class Perceptron extends Thread {
 			}
 
 		}
-	//	spat(1000);
+		// spat(1000);
 
-		Point testingPoint = Utilities.createInputVecor(toTest); // bad implementation of user input. Works bad with threads, should be done iteratively instead
+		Point testingPoint = Utilities.createInputVecor(toTest); // bad implementation of user input. Works bad with
+																	// threads, should be done iteratively instead
 		double output = calculateActualOutput(testingPoint);
 
 		if (map.containsKey(testingPoint)) {
@@ -141,14 +142,5 @@ public class Perceptron extends Thread {
 		}
 		return Math.abs(a - calculateActualOutput(inputVector));
 	}
-
-//	void spat(long milis) {
-//		try {
-//			Thread.sleep(milis);
-//		} catch (InterruptedException e1) {
-//			// TODO Auto-generated catch block
-//			e1.printStackTrace();
-//		}
-//	}
 
 }

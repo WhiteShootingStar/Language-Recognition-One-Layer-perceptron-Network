@@ -3,6 +3,7 @@ package perceptron;
 public class Tuple {// utility class for convenient (in my opinion ) storage in the map
 	public String perceptronName;
 	public double value;
+
 	public Tuple(String perceptronName, double value) {
 
 		this.perceptronName = perceptronName;
@@ -39,5 +40,4 @@ public class Tuple {// utility class for convenient (in my opinion ) storage in 
 		return true;
 	}
 
-	
 }
